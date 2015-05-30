@@ -32,7 +32,7 @@ Send mail using the `send()` method.  Pass in the complete e-mail message as a m
 		"From: citizen@email.com\n" + 
 		"Subject: NASA Budget\n" +
 		"\n" +  
-		"Dear Mr. Presdient,\nPlease give NASA back their money.\n";
+		"Dear Mr. President,\nPlease give NASA back their money.\n";
 	
 	mail.send( message, function(err) {
 		if (err) console.log( "Mail Error: " + err );
