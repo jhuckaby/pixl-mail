@@ -42,6 +42,9 @@ module.exports = Class.create({
 			return;
 		}
 		
+		// support null callback
+		if (!callback) callback = function() {};
+		
 		// perform placeholder substitution on body
 		if (args) data = Tools.substitute( data, args );
 		
