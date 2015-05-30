@@ -126,7 +126,7 @@ If you want to send HTML formatted e-mails, the library will automatically detec
 		"From: citizen@email.com\n" + 
 		"Subject: NASA Budget\n" + 
 		"\n" + 
-		"<h1>Dear Mr. Presdient,</h1>\n<p><b>Please</b> give NASA back their <i>money</i>.</p>\n";
+		"<h1>Dear Mr. President,</h1>\n<p><b>Please</b> give NASA back their <i>money</i>.</p>\n";
 	
 	mail.send( message, function(err) {
 		if (err) console.log( "Mail Error: " + err );
