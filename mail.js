@@ -55,7 +55,7 @@ module.exports = Class.create({
 		var parts = data.split(/\n\n/);
 		var headers_raw = parts.shift();
 		var body_raw = parts.join("\n\n");
-		if (!body_raw.match(/\S/)) return callback( new Error("Cannot locate e-mail body.") );
+		if (!body_raw.match(/\S/)) return callback( new Error("Cannot locate e-mail body."), data );
 		
 		// parse headers into key/value pairs
 		var headers = {};
@@ -69,9 +69,9 @@ module.exports = Class.create({
 		var from = headers['From'];
 		var subject = headers['Subject'];
 		
-		if (!to) return callback( new Error("Missing required header: 'To'") );
-		if (!from) return callback( new Error("Missing required header: 'From'") );
-		if (!subject) return callback( new Error("Missing required header: 'Subject'") );
+		if (!to) return callback( new Error("Missing required header: 'To'"), data );
+		if (!from) return callback( new Error("Missing required header: 'From'"), data );
+		if (!subject) return callback( new Error("Missing required header: 'Subject'"), data );
 		
 		delete headers['To'];
 		delete headers['From'];
@@ -104,6 +104,8 @@ module.exports = Class.create({
 		else opts.text = body_raw;
 		
 		// send mail
-		transport.sendMail( opts, callback );
+		transport.sendMail( opts, function(err) {
+			callback( err, data );
+		} );
 	}
 });
