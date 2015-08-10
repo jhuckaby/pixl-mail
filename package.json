@@ -1,6 +1,6 @@
 {
 	"name": "pixl-mail",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "A very simple class for sending e-mail via SMTP.",
 	"author": "Joseph Huckaby <jhuckaby@gmail.com>",
 	"homepage": "https://github.com/jhuckaby/pixl-mail",

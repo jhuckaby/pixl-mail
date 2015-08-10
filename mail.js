@@ -9,13 +9,26 @@ var Class = require('pixl-class');
 
 module.exports = Class.create({
 	
-	hostname: '127.0.0.1',
-	port: 25,
+	options: null,
 	
 	__construct: function(hostname, port) {
 		// class constructor
-		if (hostname) this.hostname = hostname;
-		if (port) this.port = port;
+		this.options = {
+			hostname: hostname || '127.0.0.1',
+			port: port || 25
+		};
+	},
+	
+	setOption: function(key, value) {
+		// set single option
+		this.options[key] = value;
+	},
+	
+	setOptions: function(opts) {
+		// set multiple options
+		for (var key in opts) {
+			this.options[key] = opts[key];
+		}
 	},
 	
 	send: function(data, args, callback) {
@@ -78,10 +91,7 @@ module.exports = Class.create({
 		delete headers['Subject'];
 		
 		// setup SMTP transport
-		var transport = nodemailer.createTransport({
-			host: this.hostname,
-			port: this.port
-		});
+		var transport = nodemailer.createTransport(this.options);
 		
 		var opts = {
 			from: from,

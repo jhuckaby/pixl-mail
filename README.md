@@ -135,6 +135,23 @@ If you want to send HTML formatted e-mails, the library will automatically detec
 
 **Note:** Your e-mail body must begin with an HTML tag for it to be recognized.
 
+## SMTP Options
+
+You can set a number of SMTP options using the `setOption()` or `setOptions()` methods.  These are passed directly to the underlying [nodemailer-smtp-transport](https://www.npmjs.com/package/nodemailer-smtp-transport#usage) module, so please check out that documentation for details.  Examples include setting timeouts, SSL, and authentication.
+
+The `setOption()` method takes one single key/value to set or replace, while `setOptions()` accepts an object containing multiple keys/values.
+
+```javascript
+	mail.setOption( 'secure', true ); // use ssl
+	mail.setOption( 'auth', { user: 'fsmith', pass: '12345' } );
+	
+	mail.setOptions({
+		connectionTimeout: 10000, // milliseconds
+		greetingTimeout: 10000, // milliseconds
+		socketTimeout: 10000 // milliseconds
+	});
+```
+
 # License
 
 Copyright (c) 2015 Joseph Huckaby.
