@@ -11,10 +11,10 @@ module.exports = Class.create({
 	
 	options: null,
 	
-	__construct: function(hostname, port) {
+	__construct: function(host, port) {
 		// class constructor
 		this.options = {
-			hostname: hostname || '127.0.0.1',
+			host: host || '127.0.0.1',
 			port: port || 25
 		};
 	},
