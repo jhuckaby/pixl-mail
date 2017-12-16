@@ -110,7 +110,7 @@ module.exports = Class.create({
 		if (args && args.attachments) opts.attachments = args.attachments;
 		
 		// auto-detect html or text
-		if (body_raw.match(/^\s*\</)) opts.html = body_raw;
+		if (body_raw.match(/^\s*</)) opts.html = body_raw;
 		else opts.text = body_raw;
 		
 		// send mail
