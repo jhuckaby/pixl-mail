@@ -90,7 +90,12 @@ module.exports = Class.create({
 		delete headers['From'];
 		delete headers['Subject'];
 		
-		// setup SMTP transport
+		if (this.options.sendmail) {
+			delete this.options.host;
+			delete this.options.port;
+		}
+		
+		// setup transport
 		var transport = nodemailer.createTransport(this.options);
 		
 		var opts = {
