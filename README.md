@@ -1,6 +1,6 @@
 # Overview
 
-This module provides a very simple e-mail sender, which leans heavily on the awesome [nodemailer](https://nodemailer.com/) package.  It layers on the ability to pass in a complete e-mail message with headers and body in one string (or file), and optionally perform placeholder substitution using [substitute()](https://www.npmjs.com/package/pixl-tools#substitute) from the [pixl-tools](https://www.npmjs.com/package/pixl-tools) package.  Auto-detects HTML or plain text e-mail body, and supports custom headers and attachments as well.
+This module provides a very simple e-mail sender, which leans heavily on the awesome [nodemailer](https://nodemailer.com/) package.  It layers on the ability to pass in a complete e-mail message with headers and body in one string (or file), and optionally perform placeholder substitution using [sub()](https://www.npmjs.com/package/pixl-tools#sub) from the [pixl-tools](https://www.npmjs.com/package/pixl-tools) package.  Auto-detects HTML or plain text e-mail body, and supports custom headers and attachments as well.
 
 # Usage
 
@@ -43,7 +43,7 @@ For multiple recipients, simply separate them by commas on the `To` line.  You c
 
 ## Placeholder Substitution
 
-The library supports a simple e-mail templating system, where you can insert `[bracket_placeholders]` in your e-mail message, and have the library fill them with appropriate content from a separate object.  This feature uses the [substitute()](https://www.npmjs.com/package/pixl-tools#substitute) function from the [pixl-tools](https://www.npmjs.com/package/pixl-tools) package.
+The library supports a simple e-mail templating system, where you can insert `[bracket_placeholders]` in your e-mail message, and have the library fill them with appropriate content from a separate object.  This feature uses the [sub()](https://www.npmjs.com/package/pixl-tools#sub) function from the [pixl-tools](https://www.npmjs.com/package/pixl-tools) package.
 
 As an example, imagine a welcome e-mail for a new user who has signed up for your app.  You have the welcome e-mail "template" stored separately, and want to fill in the user's e-mail address, full name and username at sending time.  Here is how to do this:
 
@@ -79,7 +79,7 @@ Dear Joseph Huckaby,
 Welcome to My App!  Your username is 'jhuckaby'.
 ```
 
-You can actually use a complex hash / array tree of arguments, and then specify `[/filesystem/style/paths]` in your placeholders.  See the [substitute()](https://www.npmjs.com/package/pixl-tools#substitute) docs for details.
+You can actually use a complex hash / array tree of arguments, and then specify `[filesystem/style/paths]` or `[dot.style.paths]` in your placeholders.  See the [sub()](https://www.npmjs.com/package/pixl-tools#sub) docs for details.
 
 ## Loading From Files
 
@@ -164,9 +164,9 @@ mail.setOptions({
 
 # License
 
-The MIT License (MIT)
+**The MIT License (MIT)**
 
-Copyright (c) 2015 - 2017 Joseph Huckaby.
+*Copyright (c) 2015 - 2019 Joseph Huckaby.*
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,5 +1,5 @@
 // Simple SMTP Email Sender
-// Copyright (c) 2015 Joseph Huckaby
+// Copyright (c) 2015 - 2019 Joseph Huckaby
 // Released under the MIT License
 
 var fs = require('fs');
@@ -59,7 +59,7 @@ module.exports = Class.create({
 		if (!callback) callback = function() {};
 		
 		// perform placeholder substitution on body
-		if (args) data = Tools.substitute( data, args );
+		if (args) data = Tools.sub( data, args );
 		
 		// fix line endings
 		data = data.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
