@@ -6,33 +6,33 @@ This module provides a very simple e-mail sender, which leans heavily on the awe
 
 Use [npm](https://www.npmjs.com/) to install the module:
 
-```
+```sh
 npm install pixl-mail
 ```
 
 Then use `require()` to load it in your code:
 
-```javascript
-var PixlMail = require('pixl-mail');
+```js
+const PixlMail = require('pixl-mail');
 ```
 
 Instantiate a mailer object and pass in the SMTP hostname (defaults to `127.0.0.1`) and the port number (defaults to `25`):
 
-```javascript
-var mail = new PixlMail( 'smtp.myserver.com', 25 );
-var mail = new PixlMail( '127.0.0.1' );
-var mail = new PixlMail();
+```js
+let mail = new PixlMail( 'smtp.myserver.com', 25 );
+let mail = new PixlMail( '127.0.0.1' );
+let mail = new PixlMail();
 ```
 
 Send mail using the `send()` method.  Pass in the complete e-mail message as a multi-line string including `To`, `From` and `Subject` headers, and a callback:
 
-```javascript
-var message = 
+```js
+let message = 
 	"To: president@whitehouse.gov\n" + 
 	"From: citizen@email.com\n" + 
-	"Subject: NASA Budget\n" +
+	"Subject: State Budget\n" +
 	"\n" +  
-	"Dear Mr. President,\nPlease give NASA back their money.\n";
+	"Dear Mr. President,\nOur state needs more money.\n";
 
 mail.send( message, function(err) {
 	if (err) console.log( "Mail Error: " + err );
@@ -43,13 +43,13 @@ For multiple recipients, simply separate them by commas on the `To` line.  You c
 
 ## Placeholder Substitution
 
-The library supports a simple e-mail templating system, where you can insert `[bracket_placeholders]` in your e-mail message, and have the library fill them with appropriate content from a separate object.  This feature uses the [sub()](https://www.npmjs.com/package/pixl-tools#sub) function from the [pixl-tools](https://www.npmjs.com/package/pixl-tools) package.
+The library supports a simple e-mail templating system, where you can insert `[bracket_placeholders]` in your e-mail message, and have the library fill them with appropriate content from a separate object.  This feature uses the [sub()](https://github.com/jhuckaby/pixl-tools#sub) function from the [pixl-tools](https://github.com/jhuckaby/pixl-tools) package.
 
 As an example, imagine a welcome e-mail for a new user who has signed up for your app.  You have the welcome e-mail "template" stored separately, and want to fill in the user's e-mail address, full name and username at sending time.  Here is how to do this:
 
-```javascript
+```js
 // email template
-var message = 
+let message = 
 	"To: [email]\n" + 
 	"From: support@myapp.com\n" + 
 	"Subject: Welcome to My App, [full_name]!\n" +
@@ -57,7 +57,7 @@ var message =
 	"Dear [full_name],\nWelcome to My App!  Your username is '[username]'.\n";
 
 // placeholder args
-var user = {
+let user = {
 	username: "jhuckaby",
 	full_name: "Joseph Huckaby",
 	email: "jhuckaby@email.com"
@@ -79,14 +79,14 @@ Dear Joseph Huckaby,
 Welcome to My App!  Your username is 'jhuckaby'.
 ```
 
-You can actually use a complex hash / array tree of arguments, and then specify `[filesystem/style/paths]` or `[dot.style.paths]` in your placeholders.  See the [sub()](https://www.npmjs.com/package/pixl-tools#sub) docs for details.
+You can actually use a complex hash / array tree of arguments, and then specify `[filesystem/style/paths]` or `[dot.style.paths]` in your placeholders.  See the [sub()](https://github.com/jhuckaby/pixl-tools#sub) docs for details.
 
 ## Loading From Files
 
 You can specify a file path instead of the raw message, like this:
 
-```javascript
-var user = {
+```js
+let user = {
 	username: "jhuckaby",
 	full_name: "Joseph Huckaby",
 	email: "jhuckaby@email.com"
@@ -101,8 +101,8 @@ mail.send( "conf/emails/new_user_welcome.txt", user, function(err) {
 
 To attach files, include an `attachments` array in your `args` object, and specify a `filename` and `path` for each one.  This is passed directly to [nodemailer](https://nodemailer.com/), so you can use all of their attachment features.  Example:
 
-```javascript
-var args = {
+```js
+let args = {
 	attachments: [
 		{ filename: "contract.pdf", path: "files/contracts/4573D.PDF" },
 		{ filename: "policy.pdf", path: "files/misc/POLICY-2015.PDF" }
@@ -120,13 +120,13 @@ For details, see the [Attachments](https://nodemailer.com/message/attachments/) 
 
 If you want to send HTML formatted e-mails, the library will automatically detect this.  Just provide the headers in plain text, two end-of-lines, then start your HTML markup.  Example:
 
-```javascript
-var message = 
+```js
+let message = 
 	"To: president@whitehouse.gov\n" + 
 	"From: citizen@email.com\n" + 
-	"Subject: NASA Budget\n" + 
+	"Subject: State Budget\n" + 
 	"\n" + 
-	"<h1>Dear Mr. President,</h1>\n<p><b>Please</b> give NASA back their <i>money</i>.</p>\n";
+	"<h1>Dear Mr. President,</h1>\n<p><b>Please</b> give our state more <i>money</i>.</p>\n";
 
 mail.send( message, function(err) {
 	if (err) console.log( "Mail Error: " + err );
@@ -141,7 +141,7 @@ You can set a number of options using the `setOption()` or `setOptions()` method
 
 The `setOption()` method takes one single key/value to set or replace, while `setOptions()` accepts an object containing multiple keys/values.
 
-```javascript
+```js
 mail.setOption( 'secure', true ); // use ssl
 mail.setOption( 'auth', { user: 'fsmith', pass: '12345' } );
 
