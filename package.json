@@ -1,6 +1,6 @@
 {
 	"name": "pixl-mail",
-	"version": "1.0.13",
+	"version": "1.0.14",
 	"description": "A very simple class for sending e-mail via SMTP.",
 	"author": "Joseph Huckaby <jhuckaby@gmail.com>",
 	"homepage": "https://github.com/jhuckaby/pixl-mail",
@@ -19,7 +19,7 @@
 		"smtp"
 	],
 	"dependencies": {
-		"nodemailer": "6.6.1",
+		"nodemailer": "6.9.9",
 		"pixl-tools": "^1.0.19",
 		"pixl-class": "^1.0.3"
 	},
