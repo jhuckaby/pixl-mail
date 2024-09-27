@@ -106,6 +106,7 @@ module.exports = class Mailer {
 		
 		['trace', 'debug', 'info', 'warn', 'error', 'fatal'].forEach( function(level) {
 			self.options.logger[level] = function(entry, message, ...args) {
+				if (!entry) entry = {};
 				message = util.format(message, ...args);
 				self.logDebug(9, message, entry);
 				log.push([ message, { date: Tools.timeNow(), level, ...entry } ]);
