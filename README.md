@@ -1,3 +1,19 @@
+<details><summary>Table of Contents</summary>
+
+<!-- toc -->
+- [Overview](#overview)
+- [Usage](#usage)
+	* [Placeholder Substitution](#placeholder-substitution)
+	* [Loading From Files](#loading-from-files)
+	* [Attachments](#attachments)
+	* [HTML Emails](#html-emails)
+	* [Options](#options)
+	* [Logging](#logging)
+	* [Debugging](#debugging)
+- [License](#license)
+
+</details>
+
 # Overview
 
 This module provides a very simple e-mail sender, which leans heavily on the awesome [nodemailer](https://nodemailer.com/) package.  It layers on the ability to pass in a complete e-mail message with headers and body in one string (or file), and optionally perform placeholder substitution using [sub()](https://www.npmjs.com/package/pixl-tools#sub) from the [pixl-tools](https://www.npmjs.com/package/pixl-tools) package.  Auto-detects HTML or plain text e-mail body, and supports custom headers and attachments as well.
@@ -35,7 +51,7 @@ let message =
 	"Dear Mr. President,\nOur state needs more money.\n";
 
 mail.send( message, function(err) {
-	if (err) console.log( "Mail Error: " + err );
+	if (err) console.error( "Mail Error: " + err );
 } );
 ```
 
@@ -110,7 +126,7 @@ let args = {
 };
 
 mail.send( message, args, function(err) {
-	if (err) console.log( "Mail Error: " + err );
+	if (err) console.error( "Mail Error: " + err );
 } );
 ```
 
@@ -129,7 +145,7 @@ let message =
 	"<h1>Dear Mr. President,</h1>\n<p><b>Please</b> give our state more <i>money</i>.</p>\n";
 
 mail.send( message, function(err) {
-	if (err) console.log( "Mail Error: " + err );
+	if (err) console.error( "Mail Error: " + err );
 } );
 ```
 
@@ -162,11 +178,57 @@ mail.setOptions({
 });
 ```
 
+## Logging
+
+You can optionally attach a [pixl-logger](https://github.com/jhuckaby/pixl-logger) compatible log agent, which will log all the [nodemailer](https://nodemailer.com/) debug messages at level 9, with the component column set to `Mailer`.  To use this feature, call the `attachLogAgent()` method on your class instance, and pass in your pixl-logger instance:
+
+```js
+mail.attachLogAgent( logger );
+```
+
+## Debugging
+
+The `send()` method actually returns three arguments: the error (if any), the final composed mail body with headers (after all macro expansion), and a full debug log capture from [nodemailer](https://nodemailer.com/).  Here is how to use them:
+
+```js
+mail.send( message, function(err, message, log) {
+	if (err) console.error( "Mail Error: " + err );
+	
+	console.log( "Full composed message: " + message );
+	
+	log.forEach( function(row) {
+		console.log( ...row );
+	} );
+} );
+```
+
+Each log row will contain two elements: the log message itself, and an object containing additional metadata.  These come directly from [nodemailer](https://nodemailer.com/).  Here is an example excerpt:
+
+```
+Creating transport: nodemailer (6.4.11; +https://nodemailer.com/; SMTP/6.4.11[client:6.4.11])
+{"component":"mail","tnx":"create"}
+
+Sending mail using SMTP/6.4.11[client:6.4.11]
+{"component":"mail","tnx":"transport","name":"SMTP","version":"6.4.11[client:6.4.11]","action":"send"}
+
+Resolved localhost as ::1 [cache miss]
+{"component":"smtp-connection","sid":"N5uAYhHPKsY","tnx":"dns","source":"localhost","resolved":"::1","cached":false}
+
+Connection established to ::1:25
+{"component":"smtp-connection","sid":"N5uAYhHPKsY","tnx":"network","localAddress":"::1","localPort":53068,"remoteAddress":"::1","remotePort":25}
+
+220 joemax.local ESMTP Postfix
+{"component":"smtp-connection","sid":"N5uAYhHPKsY","tnx":"server"}
+
+EHLO joemax.local
+{"component":"smtp-connection","sid":"N5uAYhHPKsY","tnx":"client"}
+```
+
 # License
 
 **The MIT License (MIT)**
 
-*Copyright (c) 2015 - 2019 Joseph Huckaby.*
+*Copyright (c) 2015 - 2024 Joseph Huckaby.*
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

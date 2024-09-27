@@ -1,37 +1,40 @@
 // Simple SMTP Email Sender
-// Copyright (c) 2015 - 2019 Joseph Huckaby
+// Copyright (c) 2015 - 2024 Joseph Huckaby
 // Released under the MIT License
 
-var fs = require('fs');
-var nodemailer = require('nodemailer');
-var Tools = require('pixl-tools');
-var Class = require('pixl-class');
+const fs = require('fs');
+const util = require('util');
+const nodemailer = require('nodemailer');
+const Tools = require('pixl-tools');
 
-module.exports = Class.create({
+module.exports = class Mailer {
 	
-	options: null,
-	
-	__construct: function(host, port) {
+	constructor(host, port) {
 		// class constructor
 		this.options = {
 			host: host || '127.0.0.1',
 			port: port || 25
 		};
-	},
+	}
 	
-	setOption: function(key, value) {
+	setOption(key, value) {
 		// set single option
 		this.options[key] = value;
-	},
+	}
 	
-	setOptions: function(opts) {
+	setOptions(opts) {
 		// set multiple options
 		for (var key in opts) {
 			this.options[key] = opts[key];
 		}
-	},
+	}
 	
-	send: function(data, args, callback) {
+	attachLogAgent(agent) {
+		// attach pixl-logger compatible log agent
+		this.logger = agent;
+	}
+	
+	send(data, args, callback) {
 		// send e-mail
 		var self = this;
 		
@@ -95,6 +98,20 @@ module.exports = Class.create({
 			delete this.options.port;
 		}
 		
+		// capture debug trace from nodemailer, and log if configured
+		// also send it back with response, whatever the result
+		this.options.debug = true;
+		this.options.logger = {};
+		var log = [];
+		
+		['trace', 'debug', 'info', 'warn', 'error', 'fatal'].forEach( function(level) {
+			self.options.logger[level] = function(entry, message, ...args) {
+				message = util.format(message, ...args);
+				self.logDebug(9, message, entry);
+				log.push( message, entry );
+			};
+		} );
+		
 		// setup transport
 		var transport = nodemailer.createTransport(this.options);
 		
@@ -120,7 +137,16 @@ module.exports = Class.create({
 		
 		// send mail
 		transport.sendMail( opts, function(err) {
-			callback( err, data );
+			callback( err, data, log );
 		} );
 	}
-});
+	
+	logDebug(level, msg, data) {
+		// log if we have an attached agent
+		if (this.logger) {
+			this.logger.set( 'component', 'Mailer' );
+			this.logger.debug( level, msg, data );
+		}
+	}
+	
+};
