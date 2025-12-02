@@ -19,7 +19,7 @@
 		"smtp"
 	],
 	"dependencies": {
-		"nodemailer": "7.0.9",
+		"nodemailer": "7.0.11",
 		"pixl-tools": "^1.0.19"
 	},
 	"devDependencies": {
