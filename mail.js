@@ -108,6 +108,7 @@ module.exports = class Mailer {
 			self.options.logger[level] = function(entry, message, ...args) {
 				if (!entry) entry = {};
 				message = util.format(message, ...args);
+				if (entry.err) entry.err = entry.err.toString();
 				self.logDebug(9, message, entry);
 				log.push([ message, { date: Tools.timeNow(), level, ...entry } ]);
 			};
